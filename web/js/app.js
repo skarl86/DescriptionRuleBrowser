@@ -77,14 +77,14 @@ var states = model.getStates();
 // });
 
 var nodes = [
-      {id: 0, vals: 'AST(149)', reflexive: true},
-      {id: 1, vals: 'AST(High)', reflexive: false },
-      {id: 2, vals: 'Hepatic parenchymal cell(Low)', reflexive: false},
-      {id: 3, vals: 'Disorder of liver(Diagonals)', reflexive: false},
-      {id: 4, vals: 'Autoimmun(High)', reflexive: false},
-      {id: 5, vals: 'Toxic(High)', reflexive: false},
-      {id: 6, vals: 'Drug(Exposure)', reflexive: false},
-      {id: 7, vals: 'Virul(Infection)', reflexive: false}
+      {id: 0, vals: 'AST(149)', reflexive: false, definition:true },
+      {id: 1, vals: 'AST(High)', reflexive: false, definition:false},
+      {id: 2, vals: 'Hepatic parenchymal cell(Low)', reflexive: false, definition:false},
+      {id: 3, vals: 'Disorder of liver(Diagonals)', reflexive: false, definition:false},
+      {id: 4, vals: 'Autoimmun(High)', reflexive: false, definition:false},
+      {id: 5, vals: 'Toxic(High)', reflexive: false, definition:false},
+      {id: 6, vals: 'Drug(Exposure)', reflexive: false, definition:false},
+      {id: 7, vals: 'Virul(Infection)', reflexive: false, definition:false}
     ],
     lastNodeId = 8,
     links = [
@@ -99,7 +99,7 @@ var nodes = [
 
 // set up SVG for D3
 var width  = 640,
-    height = 540,
+    height = 700,
     colors = d3.scale.category10();
 
 var svg = d3.select('#app-body .graph')
@@ -149,6 +149,64 @@ var drag_line = svg.append('svg:path')
 // handles to link and node element groups
 var path = svg.append('svg:g').selectAll('path'),
     circle = svg.append('svg:g').selectAll('g');
+
+// add legend
+var legendWidth = 40;
+var legendHeight = 5;
+var legendSpacing = 4;
+var legendX = 10;
+var legendY = 10;
+var legendYGap = 20;
+
+// first legend
+var legend = svg.append("g")
+    .attr('class', 'legend')                                // NEW
+    .attr('transform', 'translate('+legendX+','+legendY+')');
+legendY += legendYGap
+
+legend.append('rect')                                     // NEW
+    .attr('width', legendWidth)                          // NEW
+    .attr('height', legendHeight)                         // NEW
+    .style('fill', '#8B0000')                                   // NEW
+    .style('stroke', '#8B0000');                                // NEW
+
+legend.append('text')                                     // NEW
+    .attr('x', legendWidth + legendSpacing)              // NEW
+    .attr('y', legendHeight)              // NEW
+    .text('Definition');
+
+// second legend
+legend = svg.append("g")
+    .attr('class', 'legend')                                // NEW
+    .attr('transform', 'translate('+legendX+','+legendY+')');
+legendY += legendYGap
+
+legend.append('rect')                                     // NEW
+    .attr('width', legendWidth)                          // NEW
+    .attr('height', legendHeight)                         // NEW
+    .style('fill', '#228B22')                                   // NEW
+    .style('stroke', '#228B22');                                // NEW
+
+legend.append('text')                                     // NEW
+    .attr('x', legendWidth + legendSpacing)              // NEW
+    .attr('y', legendHeight)              // NEW
+    .text('Diagonal');
+
+// thrid legend
+legend = svg.append("g")
+    .attr('class', 'legend')                                // NEW
+    .attr('transform', 'translate('+legendX+','+legendY+')');
+
+legend.append('rect')                                     // NEW
+    .attr('width', legendWidth)                          // NEW
+    .attr('height', legendHeight)                         // NEW
+    .style('fill', '#002')                                   // NEW
+    .style('stroke', '#002');                                // NEW
+
+legend.append('text')                                     // NEW
+    .attr('x', legendWidth + legendSpacing)              // NEW
+    .attr('y', legendHeight)              // NEW
+    .text('Causal');
 
 // mouse event vars
 var selected_node = null,
@@ -334,7 +392,7 @@ function setVarForSelectedNode(varnum, value) {
 // update force layout (called automatically each iteration)
 function tick() {
   circle.attr('transform', function(d) {
-    if(d.id === 0){
+    if(d.definition){
       d.x = 300;
       d.y = 20;
     }
