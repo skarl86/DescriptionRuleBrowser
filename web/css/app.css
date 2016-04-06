@@ -150,10 +150,10 @@ table.propvars td.var-name {
 }
 
 #app-body .graph {
-  width: 640px;
-  height: 540px;
+  width: 680px;
+  height: 700px;
   position: absolute;
-  left: 320px;
+  left: 280px;
 }
 
 #app-body .current-formula {

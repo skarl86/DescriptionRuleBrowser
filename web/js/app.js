@@ -98,7 +98,7 @@ var nodes = [
     ];
 
 // set up SVG for D3
-var width  = 640,
+var width  = 680,
     height = 700,
     colors = d3.scale.category10();
 
